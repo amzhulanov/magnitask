@@ -1,0 +1,7 @@
+# Project exclude paths
+/app/target/
+/arithmetic/target/
+/target/
+/test/target/
+/xmlTransform/target/
+*.xml

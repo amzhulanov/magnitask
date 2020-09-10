@@ -12,12 +12,13 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Класс формирует и наполняет XML-файл
  */
-public class WriteXMLFile {
+public class WriteXMLFile implements Serializable {
 
     private Document doc;
     private Element rootElement;

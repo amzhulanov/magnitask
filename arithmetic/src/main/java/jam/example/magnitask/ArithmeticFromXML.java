@@ -1,4 +1,4 @@
-package jam.example.magmitask;
+package jam.example.magnitask;
 
 import javax.xml.namespace.QName;
 import javax.xml.stream.XMLEventReader;
@@ -30,8 +30,6 @@ public class ArithmeticFromXML implements Serializable {
     /**
      *Метод считывает данные из XML файла
      * @return Возвращает арифметическую сумму всех значений
-     * @throws FileNotFoundException - исключение, если XML-файл не найден
-     * @throws XMLStreamException
      */
     public Long arithmetic() {
         XMLInputFactory xmlInputFactory = XMLInputFactory.newInstance();

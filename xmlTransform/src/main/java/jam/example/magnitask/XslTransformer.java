@@ -13,8 +13,6 @@ import java.io.Serializable;
  * Класс выполняет преобразование XML посредством XSLT
  */
 public class XslTransformer implements Serializable {
-    //private final String SOURCE_FILE_XSLT="xmlTransform/src/main/resources/default.xslt";
-    private final File sourceFileXSLT;
     private final File sourceFileXML;
     private final File resultFileXML;
 
@@ -22,10 +20,9 @@ public class XslTransformer implements Serializable {
      * @param sourceFileXML - файл XML источник
      * @param resultFileXML - XML файл для сохранения изменений
      */
-    public XslTransformer(File sourceFileXML, File resultFileXML,File sourceFileXSLT) {
+    public XslTransformer(File sourceFileXML, File resultFileXML) {
         this.sourceFileXML = sourceFileXML;
         this.resultFileXML = resultFileXML;
-        this.sourceFileXSLT=sourceFileXSLT;
     }
 
     /**
@@ -33,8 +30,9 @@ public class XslTransformer implements Serializable {
      * @throws TransformerException
      */
     public void Transformer() throws TransformerException {
+        File sourceFileXSLT1 =new File("default.xslt");
         TransformerFactory factory = TransformerFactory.newInstance();
-        Source xslt = new StreamSource(sourceFileXSLT);
+        Source xslt = new StreamSource(sourceFileXSLT1);
         Transformer transformer = factory.newTransformer(xslt);
         Source xml = new StreamSource(sourceFileXML);
         transformer.transform(xml, new StreamResult(resultFileXML));

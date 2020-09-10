@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Main-Class: jam.example.magnitask.MainApp
+Created-By: jam
+

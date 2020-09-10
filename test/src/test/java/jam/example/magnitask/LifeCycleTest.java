@@ -1,19 +1,15 @@
 package jam.example.magnitask;
 
-import jam.example.magmitask.ArithmeticFromXML;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.xml.transform.TransformerException;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.*;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Properties;
+import java.util.ResourceBundle;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,17 +32,16 @@ public class LifeCycleTest {
     private static String url;
     private static String sourceFileXML;
     private static String resultFileXML;
-    private static String sourceFileXSLT;
     private static String driverName;
     private static String user;
     private static String pwd;
-    private final Long n=1000000L;
+    private final Long n=25L;
     private final Long limitTime=300L;
 
     private ProcessingDataBase processingDataBase;
 
     @BeforeEach
-    public void connectDB() throws ClassNotFoundException, SQLException {
+    void connectDB() throws ClassNotFoundException, SQLException {
         configApp();
         Class.forName(driverName);
         conn=DriverManager.getConnection(url, user, pwd);
@@ -55,7 +50,7 @@ public class LifeCycleTest {
     }
 
     @AfterEach
-    public void closeConnect() throws SQLException {
+    void closeConnect() throws SQLException {
         processingDataBase.closeConn();
         assertTrue(conn.isClosed());
     }
@@ -82,7 +77,7 @@ public class LifeCycleTest {
         processingDataBase.readAndWriteData();
 
 //3. Преобразовать XML через XSLT
-        XslTransformer xslTransformer=new XslTransformer(new File(sourceFileXML),new File(resultFileXML),new File(sourceFileXSLT));
+        XslTransformer xslTransformer=new XslTransformer(new File(sourceFileXML),new File(resultFileXML));
         try {
             xslTransformer.Transformer();
         } catch (TransformerException e) {
@@ -94,6 +89,10 @@ public class LifeCycleTest {
         Long sum=arithmeticFromXML.arithmetic();
         Instant finish = Instant.now();
         long elapsed = Duration.between(start, finish).toMillis()/ 1000;
+        System.out.println(elapsed);
+
+
+
         assertThat (elapsed).isLessThan(limitTime);
         assertEquals((n + n* n)/2, (long) sum);
     }
@@ -107,26 +106,14 @@ public class LifeCycleTest {
         }
     }
 
-    private  static void configApp() {
-        FileInputStream fis=null;
-        Properties property = new Properties();
-        try {
-            fis = new FileInputStream(CFG);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        try {
-            property.load(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        driverName = property.getProperty("driver.name");
-        sourceFileXML = property.getProperty("sourceFileXML");
-        resultFileXML = property.getProperty("resultFileXML");
-        sourceFileXSLT = property.getProperty("sourceFileXSLT");
-        url = property.getProperty("url");
-        user=property.getProperty("user");
-        pwd= property.getProperty("pwd");
+    private  void configApp() {
+        ResourceBundle props = ResourceBundle.getBundle("config");
+        driverName = props.getString("driver.name");
+        sourceFileXML = props.getString("sourceFileXML");
+        resultFileXML = props.getString("resultFileXML");
+        url = props.getString("url");
+        user=props.getString("user");
+        pwd= props.getString("pwd");
     }
 
 }
